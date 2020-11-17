@@ -1,9 +1,44 @@
 require("@babel/polyfill");
 import Search from "./model/Search";
+import { elements, renderLoader, clearLoader } from "./view/base";
+import * as searchView from "./view/searchView";
+/**
+ * web app tuluv
+ *
+ */
 
-let search = new Search("pasta");
+const state = {};
 
-search.doSearch().then((r) => console.log(r));
+const controlSearch = async () => {
+  //web ees hailtiin tulhuur ugiig gargaj avna
+  const query = searchView.getInput(); //searchView.getInput();
+
+  if (query) {
+    //shineer hailtiin obektiig uusgene
+    state.search = new Search(query);
+    //hailt hiihed zoriulj delgetsiig UI beldene
+    searchView.clearSearchQuery();
+    searchView.clearSearchResult();
+    renderLoader(elements.searchResultDiv);
+    //hailtiig guitsetgene
+    await state.search.doSearch();
+    //hailtiin ur dung gargana
+    clearLoader();
+    if (state.search.result === undefined) searchView.renderRecipes();
+    else {
+      searchView.renderRecipes(state.search.result);
+    }
+  }
+};
+
+elements.searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  controlSearch();
+});
+
+//let search = new Search("pasta");
+
+//search.doSearch().then((r) => console.log(r));
 
 // import axios from "axios";
 

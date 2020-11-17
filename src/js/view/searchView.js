@@ -1,9 +1,30 @@
-var superadd = (a, b) => {
-  return a + b + 1000;
+import { elements } from "./base";
+
+const renderRecipe = (recipe) => {
+  const markup = `<li>
+  <a class="results__link" href="${recipe.recipe_id}">
+      <figure class="results__fig">
+          <img src="${recipe.image_url}" alt="Test">
+      </figure>
+      <div class="results__data">
+          <h4 class="results__name">${recipe.title}</h4>
+          <p class="results__author">${recipe.publisher}</p>
+      </div>
+  </a>
+</li>`;
+
+  elements.searchResultlist.insertAdjacentHTML("beforeend", markup);
 };
 
-export const add = (a, b) => superadd(a, b);
+export const clearSearchQuery = () => {
+  elements.searchInput.value = "";
+};
 
-export let multiply = (a, b) => a * b;
+export const clearSearchResult = () => {
+  elements.searchResultlist.innerHTML = "";
+};
 
-export const id = 23;
+export const getInput = () => elements.searchInput.value;
+export const renderRecipes = (recipes) => {
+  recipes.forEach(renderRecipe);
+};
